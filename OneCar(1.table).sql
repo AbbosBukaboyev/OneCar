@@ -32,7 +32,7 @@ create table user_roles(
   user_id                         number(10)   not null,
   role_code                       varchar2(20) not null,
   constraint user_roles_pk primary key (user_id, role_code),
-  constraint user_roles_f1 foreign key (user_id) references users(user_id),
+  constraint user_roles_f1 foreign key (user_id) references users(user_id) on delete cascade,
   constraint user_roles_c1 check (role_code in ('ADMIN', 'EMPLOYEE', 'CLIENT'))
 );
 
@@ -183,7 +183,7 @@ create table requests(
 );
 
 comment on column requests.request_type is 'Type of request: (M)aintenance, (R)epair';
-comment on column requests.status is 'Status of request: (C)heck-in, (I)nspection, cost (E), (W)aiting client approval, (A)pproved by client, (R)ejected by client, work in (P)rogress, c(O)mpleted';
+comment on column requests.status is 'Status of request: (C)heck-in, (I)nspection, cost (E), (W)aiting client approval, (A)pproved by client, (R)ejected by client, work in (P)rogress, c(O)mpleted, C(A)ncelled';
 
 create index requests_i1 on requests(user_id, car_id);
 
@@ -194,7 +194,7 @@ create table request_services(
   price                           number(20, 6) not null,
   note                            varchar2(4000),
   constraint request_services_pk primary key (request_id, service_id),
-  constraint request_services_f1 foreign key (request_id) references requests(request_id),
+  constraint request_services_f1 foreign key (request_id) references requests(request_id) on delete cascade,
   constraint request_services_f2 foreign key (service_id) references services(service_id),
   constraint request_services_c1 check (price > 0)
 );
@@ -210,7 +210,7 @@ create table request_service_items(
   price                           number(20, 6) not null,
   total_amount                    number(20, 6) not null,
   constraint request_service_items_pk primary key (request_id, service_id, component_id),
-  constraint request_service_items_f1 foreign key (request_id, service_id) references request_services(request_id, service_id),
+  constraint request_service_items_f1 foreign key (request_id, service_id) references request_services(request_id, service_id) on delete cascade,
   constraint request_service_items_f2 foreign key (component_id) references car_components(component_id),
   constraint request_service_items_c1 check (count > 0),
   constraint request_service_items_c2 check (price > 0),
