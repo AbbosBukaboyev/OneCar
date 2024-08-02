@@ -18,7 +18,7 @@ create table users(
   constraint users_c6 check (regexp_like(email, '^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,}$', 'i')),
   constraint users_c7 check (status in ('A', 'P')),
   constraint users_c8 check (nvl2(login, 1, 0) + nvl2(password, 1, 0) in (0, 2)),
-  constraint users_c9 check (phone_number is not null or email is not null)
+  constraint users_c9 check (coalesce(login, phone_number, email) is not null)
 );
 
 comment on column users.status is 'Status of user: (A)ctive, (P)assive';
@@ -220,7 +220,16 @@ create table request_service_items(
 create index request_service_items_i1 on request_service_items(service_id);
 create index request_service_items_i2 on request_service_items(component_id);
 
--- users
-insert into users(first_name, last_name, login, password, status) values ('admin', 'admin', 'admin', '12345', 'A');
-insert into users(first_name, last_name, phone_number, status) values ('Abbos', 'Bukaboev', '12345', 'A');
-insert into users(first_name, last_name, email, status) values ('Rustam', 'Ahmad', 'test@gmail.com', 'A');
+/*drop table request_service_items;
+drop table request_services;
+drop table requests;
+drop table car_components;
+drop table services;
+drop table service_groups;
+drop table user_cars;
+drop table cars;
+drop table car_models;
+drop table car_brands;
+drop table clients;
+drop table user_roles;
+drop table users;*/
