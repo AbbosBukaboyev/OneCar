@@ -53,7 +53,7 @@ create index clients_i1 on clients(client_id);
 ----------------------------------------------------------------------------------------------------
 create table car_brands(
   car_brand_id                    number(10) generated always as identity not null,
-  name                            varchar2(100)  not null,
+  name                            varchar2(100) not null,
   description                     varchar2(1000),
   constraint car_brands_pk primary key (car_brand_id),
   constraint car_brands_c1 check (decode(name, trim(name), 1, 0) = 1)
@@ -64,7 +64,7 @@ create unique index car_brands_u1 on car_brands(name);
 ----------------------------------------------------------------------------------------------------
 create table car_models(
   car_model_id                    number(10) generated always as identity not null,
-  car_brand_id                   number(10) not null,
+  car_brand_id                   number(10)     not null,
   name                            varchar2(100) not null,
   description                     varchar2(1000),
   constraint car_models_pk primary key (car_model_id),
@@ -94,8 +94,8 @@ create index cars_i1 on cars(car_model_id, car_brand_id);
 
 ----------------------------------------------------------------------------------------------------
 create table user_cars(
-  user_id                         number(10) not null,
-  car_id                          number(10) not null,
+  user_id                         number(10)   not null,
+  car_id                          number(10)   not null,
   state_number                    varchar2(50) not null,
   color                           varchar2(20),
   status                          varchar2(1)  not null,
@@ -113,7 +113,7 @@ create index user_cars_i2 on user_cars(car_id);
 create table service_groups(
   service_group_id                number(10) generated always as identity not null,
   name                            varchar2(100) not null,
-  status                          varchar2(1)  not null,
+  status                          varchar2(1)   not null,
   order_no                        number(6),
   constraint service_groups_pk primary key (service_group_id),
   constraint service_groups_c1 check (decode(name, trim(name), 1, 0) = 1),
@@ -203,10 +203,10 @@ create index request_services_i1 on request_services(service_id);
 
 ----------------------------------------------------------------------------------------------------
 create table request_service_items(
-  request_id                  number(20)  not null,
-  service_id                      number(20)  not null,
-  component_id                    number(6)   not null,
-  count                           number(6)   not null,
+  request_id                      number(20)    not null,
+  service_id                      number(20)    not null,
+  component_id                    number(6)     not null,
+  count                           number(6)     not null,
   price                           number(20, 6) not null,
   total_amount                    number(20, 6) not null,
   constraint request_service_items_pk primary key (request_id, service_id, component_id),
