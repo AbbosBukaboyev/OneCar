@@ -1,0 +1,372 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<diagram program="umlet" version="14.3.0">
+  <zoom_level>11</zoom_level>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>55</x>
+      <y>0</y>
+      <w>231</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>users
+--
+*user_id*
+first_name
+last_name
+/middle_name/
+/login/
+/password/
+/phone_number/
+/email/
+status</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>55</x>
+      <y>209</y>
+      <w>231</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>user_roles
+--
+*user_id*
+*role_code*</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>836</x>
+      <y>0</y>
+      <w>231</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>service_groups
+--
+*service_group_id*
+name
+status
+order_no
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>836</x>
+      <y>143</y>
+      <w>231</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>services
+--
+*service_id*
+service_group_id
+name
+price
+status
+order_no
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>55</x>
+      <y>363</y>
+      <w>231</w>
+      <h>88</h>
+    </coordinates>
+    <panel_attributes>car_brands
+--
+*car_brand_id*
+name
+/description/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>55</x>
+      <y>495</y>
+      <w>231</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>car_models
+--
+*car_model_id*
+car_brand_id
+name
+/description/
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>462</x>
+      <y>374</y>
+      <w>231</w>
+      <h>77</h>
+    </coordinates>
+    <panel_attributes>clients
+--
+*client_id*
+status</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>55</x>
+      <y>671</y>
+      <w>231</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>cars
+--
+*car_id*
+car_model_id
+car_brand_id
+vin_number
+year_of_manufacture</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>462</x>
+      <y>528</y>
+      <w>231</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>client_cars
+--
+*client_id*
+*car_id*
+state_number
+color
+status</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>825</x>
+      <y>374</y>
+      <w>231</w>
+      <h>176</h>
+    </coordinates>
+    <panel_attributes>requests
+--
+*request_id*
+request_time
+request_type
+client_id
+car_id
+/issue_details/
+/issue_file_sha/
+status</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>825</x>
+      <y>583</y>
+      <w>231</w>
+      <h>110</h>
+    </coordinates>
+    <panel_attributes>request_services
+--
+*request_id*
+*service_id*
+price
+note</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>825</x>
+      <y>759</y>
+      <w>231</w>
+      <h>132</h>
+    </coordinates>
+    <panel_attributes>request_service_items
+--
+*request_id*
+*service_id*
+*component_id*
+price
+count
+total_amount</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>UMLClass</id>
+    <coordinates>
+      <x>1199</x>
+      <y>231</y>
+      <w>231</w>
+      <h>121</h>
+    </coordinates>
+    <panel_attributes>car_components
+--
+*component_id*
+name
+component_type
+price
+status
+</panel_attributes>
+    <additional_attributes/>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>0</x>
+      <y>33</y>
+      <w>77</w>
+      <h>242</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=1..n</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0;10.0;190.0;50.0;190.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>0</x>
+      <y>385</y>
+      <w>77</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=1..n</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0;10.0;150.0;50.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>275</x>
+      <y>528</y>
+      <w>99</w>
+      <h>220</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..n</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;10.0;50.0;180.0;10.0;180.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>407</x>
+      <y>396</y>
+      <w>77</w>
+      <h>187</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..n</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;30.0;10.0;150.0;50.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>275</x>
+      <y>572</y>
+      <w>209</w>
+      <h>165</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..n</panel_attributes>
+    <additional_attributes>10.0;130.0;140.0;130.0;140.0;10.0;170.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>781</x>
+      <y>33</y>
+      <w>77</w>
+      <h>198</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+m2=1..n</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0;10.0;150.0;50.0;150.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>682</x>
+      <y>440</y>
+      <w>165</w>
+      <h>143</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..n</panel_attributes>
+    <additional_attributes>10.0;110.0;100.0;110.0;100.0;10.0;130.0;10.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1045</x>
+      <y>396</y>
+      <w>99</w>
+      <h>242</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..n</panel_attributes>
+    <additional_attributes>10.0;10.0;50.0;10.0;50.0;200.0;10.0;200.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1045</x>
+      <y>176</y>
+      <w>154</w>
+      <h>484</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..n</panel_attributes>
+    <additional_attributes>20.0;10.0;100.0;10.0;100.0;420.0;10.0;420.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>770</x>
+      <y>627</y>
+      <w>77</w>
+      <h>209</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..n</panel_attributes>
+    <additional_attributes>50.0;10.0;10.0;10.0;10.0;170.0;50.0;170.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>1045</x>
+      <y>253</y>
+      <w>528</w>
+      <h>605</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..n</panel_attributes>
+    <additional_attributes>350.0;10.0;440.0;10.0;440.0;530.0;10.0;530.0</additional_attributes>
+  </element>
+  <element>
+    <id>Relation</id>
+    <coordinates>
+      <x>275</x>
+      <y>33</y>
+      <w>209</w>
+      <h>396</h>
+    </coordinates>
+    <panel_attributes>lt=&lt;-
+1..1</panel_attributes>
+    <additional_attributes>10.0;10.0;130.0;10.0;130.0;330.0;170.0;340.0</additional_attributes>
+  </element>
+</diagram>
