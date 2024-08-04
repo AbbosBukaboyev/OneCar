@@ -36,6 +36,8 @@ create table user_roles(
   constraint user_roles_c1 check (role_code in ('ADMIN', 'EMPLOYEE', 'CLIENT'))
 );
 
+create unique index user_roles_u1(decode(role_code, 'ADMIN', user_id, null), role_code, 'ADMIN', role_code, null));
+
 create index user_roles_i1 on user_roles(user_id);
 
 ----------------------------------------------------------------------------------------------------
@@ -93,21 +95,21 @@ create unique index cars_u1 on cars(vin_number);
 create index cars_i1 on cars(car_model_id, car_brand_id);
 
 ----------------------------------------------------------------------------------------------------
-create table user_cars(
-  user_id                         number(10)   not null,
+create table client_cars(
+  client_id                       number(10)   not null,
   car_id                          number(10)   not null,
   state_number                    varchar2(50) not null,
   color                           varchar2(20),
   status                          varchar2(1)  not null,
-  constraint user_cars_pk primary key (user_id, car_id),
-  constraint user_cars_f1 foreign key (user_id) references users(user_id),
-  constraint user_cars_f2 foreign key (car_id) references cars(car_id),
-  constraint user_cars_c1 check (decode(state_number, trim(state_number), 1, 0) = 1),
-  constraint user_cars_c2 check (decode(color, trim(color), 1, 0) = 1)
+  constraint client_cars_pk primary key (client_id, car_id),
+  constraint client_cars_f1 foreign key (client_id) references clients(client_id),
+  constraint client_cars_f2 foreign key (car_id) references cars(car_id),
+  constraint client_cars_c1 check (decode(state_number, trim(state_number), 1, 0) = 1),
+  constraint client_cars_c2 check (decode(color, trim(color), 1, 0) = 1)
 );
 
-create index user_cars_i1 on user_cars(user_id);
-create index user_cars_i2 on user_cars(car_id);
+create index client_cars_i1 on client_cars(client_id);
+create index client_cars_i2 on client_cars(car_id);
 
 ----------------------------------------------------------------------------------------------------
 create table service_groups(
@@ -127,10 +129,10 @@ create unique index service_groups_u1 on service_groups(name);
 ----------------------------------------------------------------------------------------------------
 create table services(
   service_id                      number(10) generated always as identity not null,
-  name                            varchar2(100) not null,
   service_group_id                number(10)    not null,
-  price                           number(20, 6) not null,
+  name                            varchar2(100) not null,
   status                          varchar2(1)   not null,
+  price                           number(20, 6) not null,
   order_no                        number(6),
   constraint services_pk primary key (service_id),
   constraint services_f1 foreign key (service_group_id) references service_groups(service_group_id),
@@ -170,13 +172,13 @@ create table requests(
   request_id                      number(10) generated always as identity not null,
   request_time                    timestamp with local time zone not null,
   request_type                    varchar2(1) not null,
-  user_id                         number(10)  not null,
+  client_id                       number(10)  not null,
   car_id                          number(10)  not null,
   issue_details                   varchar2(4000),
   issue_file_sha                  varchar2(64),
   status                          varchar2(1) not null,
   constraint requests_pk primary key (request_id),
-  constraint requests_f1 foreign key (user_id, car_id) references user_cars(user_id, car_id),
+  constraint requests_f1 foreign key (client_id, car_id) references client_cars(client_id, car_id),
   constraint requests_c1 check (request_type in ('M', 'R')),
   constraint requests_c2 check (status in ('C', 'I', 'E', 'W', 'A', 'R', 'P', 'C')),
   constraint requests_c3 check (issue_details is not null or issue_file_sha is not null)
@@ -185,7 +187,7 @@ create table requests(
 comment on column requests.request_type is 'Type of request: (M)aintenance, (R)epair';
 comment on column requests.status is 'Status of request: (C)heck-in, (I)nspection, cost (E), (W)aiting client approval, (A)pproved by client, (R)ejected by client, work in (P)rogress, c(O)mpleted, C(A)ncelled';
 
-create index requests_i1 on requests(user_id, car_id);
+create index requests_i1 on requests(client_id, car_id);
 
 ----------------------------------------------------------------------------------------------------
 create table request_services(
@@ -226,7 +228,7 @@ drop table requests;
 drop table car_components;
 drop table services;
 drop table service_groups;
-drop table user_cars;
+drop table client_cars;
 drop table cars;
 drop table car_models;
 drop table car_brands;
