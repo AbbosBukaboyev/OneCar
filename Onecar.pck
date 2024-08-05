@@ -261,6 +261,8 @@ create or replace package Onecar is
     i_Status         varchar2
   );
   ----------------------------------------------------------------------------------------------------
+  Procedure Request_Delete(i_Request_Id number);
+  ----------------------------------------------------------------------------------------------------
   Procedure Request_Service_Save
   (
     i_Request_Id number,
@@ -920,6 +922,13 @@ create or replace package body Onecar is
            t.Issue_Details  = i_Issue_Details,
            t.Issue_File_Sha = i_Issue_File_Sha,
            t.Status         = i_Status
+     where t.Request_Id = i_Request_Id;
+  end;
+
+  ----------------------------------------------------------------------------------------------------
+  Procedure Request_Delete(i_Request_Id number) is
+  begin
+    delete Requests t
      where t.Request_Id = i_Request_Id;
   end;
 

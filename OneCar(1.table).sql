@@ -82,11 +82,11 @@ create table cars(
   car_brand_id                    number(10)   not null,
   car_model_id                    number(10)   not null,
   vin_number                      varchar2(17) not null,
-  year_of_manufacture             varchar2(4)  not null,
+  year_of_manufacture             number(4)    not null,
   constraint cars_pk primary key (car_id),
   constraint cars_f1 foreign key (car_model_id, car_brand_id) references car_models(car_model_id, car_brand_id),
   constraint cars_c1 check (decode(vin_number, trim(vin_number), 1, 0) = 1),
-  constraint cars_c2 check (decode(year_of_manufacture, trim(year_of_manufacture), 1, 0) = 1)
+  constraint cars_c2 check (year_of_manufacture > 1900)
 );
 
 create unique index cars_u1 on cars(vin_number);
