@@ -220,18 +220,3 @@ create table request_service_items(
 
 create index request_service_items_i1 on request_service_items(service_id);
 create index request_service_items_i2 on request_service_items(component_id);
-
-/*drop table request_service_items;
-drop table request_services;
-drop table requests;
-drop table car_components;
-drop table services;
-drop table service_groups;
-drop table client_cars;
-drop table cars;
-drop table car_models;
-drop table car_brands;
-drop table clients;
-drop table user_roles;
-drop table users;
-*/
