@@ -35,12 +35,12 @@ insert into cars(car_brand_id, car_model_id, vin_number, year_of_manufacture) va
 insert into cars(car_brand_id, car_model_id, vin_number, year_of_manufacture) values (4, 4, '1HGCM82633A123458', '2020');
 insert into cars(car_brand_id, car_model_id, vin_number, year_of_manufacture) values (5, 5, '5YJSA1E26MF123459', '2019');
 
--- user_cars
-insert into user_cars(user_id, car_id, state_number, color, status) values (2, 1, 'AB123CD', 'Red', 'A');
-insert into user_cars(user_id, car_id, state_number, color, status) values (2, 2, 'EF456GH', 'Blue', 'A');
-insert into user_cars(user_id, car_id, state_number, color, status) values (3, 3, 'IJ789KL', 'Black', 'A');
-insert into user_cars(user_id, car_id, state_number, color, status) values (3, 4, 'MN012OP', 'White', 'A');
-insert into user_cars(user_id, car_id, state_number, color, status) values (3, 5, 'QR345ST', 'Gray', 'A');
+-- client_cars
+insert into client_cars(client_id, car_id, state_number, color, status) values (2, 1, 'AB123CD', 'Red', 'A');
+insert into client_cars(client_id, car_id, state_number, color, status) values (2, 2, 'EF456GH', 'Blue', 'A');
+insert into client_cars(client_id, car_id, state_number, color, status) values (3, 3, 'IJ789KL', 'Black', 'A');
+insert into client_cars(client_id, car_id, state_number, color, status) values (3, 4, 'MN012OP', 'White', 'A');
+insert into client_cars(client_id, car_id, state_number, color, status) values (3, 5, 'QR345ST', 'Gray', 'A');
 
 -- service_groups
 insert into service_groups(name, status, order_no) values ('Basic Maintenance', 'A', 1);
@@ -64,11 +64,11 @@ insert into car_components(name, component_type, status, price) values ('Radiato
 insert into car_components(name, component_type, status, price) values ('Fan Belt', 'B', 'A', 19.99);
 
 -- requests
-insert into requests(request_time, request_type, user_id, car_id, issue_details, status) values (current_timestamp, 'M', 2, 1, 'Oil change needed', 'C');
-insert into requests(request_time, request_type, user_id, car_id, issue_details, status) values (current_timestamp, 'R', 2, 2, 'Brake replacement', 'I');
-insert into requests(request_time, request_type, user_id, car_id, issue_details, status) values (current_timestamp, 'M', 3, 3, 'Tire rotation needed', 'E');
-insert into requests(request_time, request_type, user_id, car_id, issue_details, status) values (current_timestamp, 'R', 3, 4, 'Radiator repair', 'W');
-insert into requests(request_time, request_type, user_id, car_id, issue_details, status) values (current_timestamp, 'M', 3, 5, 'Battery check', 'A');
+insert into requests(request_time, request_type, client_id, car_id, issue_details, status) values (current_timestamp, 'M', 2, 1, 'Oil change needed', 'C');
+insert into requests(request_time, request_type, client_id, car_id, issue_details, status) values (current_timestamp, 'R', 2, 2, 'Brake replacement', 'I');
+insert into requests(request_time, request_type, client_id, car_id, issue_details, status) values (current_timestamp, 'M', 3, 3, 'Tire rotation needed', 'E');
+insert into requests(request_time, request_type, client_id, car_id, issue_details, status) values (current_timestamp, 'R', 3, 4, 'Radiator repair', 'W');
+insert into requests(request_time, request_type, client_id, car_id, issue_details, status) values (current_timestamp, 'M', 3, 5, 'Battery check', 'A');
 
 -- request_services
 insert into request_services(request_id, service_id, price, note) values (1, 1, 29.99, 'Urgent');
@@ -83,3 +83,5 @@ insert into request_service_items(request_id, service_id, component_id, count, p
 insert into request_service_items(request_id, service_id, component_id, count, price, total_amount) values (3, 2, 2, 4, 19.99, 79.96);
 insert into request_service_items(request_id, service_id, component_id, count, price, total_amount) values (4, 4, 4, 1, 9.99, 9.99);
 insert into request_service_items(request_id, service_id, component_id, count, price, total_amount) values (5, 4, 4, 1, 9.99, 9.99);
+
+commit;
