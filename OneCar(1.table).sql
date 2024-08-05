@@ -36,7 +36,7 @@ create table user_roles(
   constraint user_roles_c1 check (role_code in ('ADMIN', 'EMPLOYEE', 'CLIENT'))
 );
 
-create unique index user_roles_u1(decode(role_code, 'ADMIN', user_id, null), role_code, 'ADMIN', role_code, null));
+create unique index user_roles_u1 on user_roles(decode(role_code, 'ADMIN', user_id, null), decode(role_code, 'ADMIN', role_code, null));
 
 create index user_roles_i1 on user_roles(user_id);
 
@@ -44,13 +44,12 @@ create index user_roles_i1 on user_roles(user_id);
 create table clients(
   client_id                       number(10)  not null,
   status                          varchar2(1) not null,
+  constraint clients_pk primary key (client_id),
   constraint clients_f1 foreign key (client_id) references users(user_id),
   constraint clients_c1 check (status in ('A', 'P'))
 );
 
 comment on column clients.status is 'Status of client: (A)ctive, (P)assive';
-
-create index clients_i1 on clients(client_id);
 
 ----------------------------------------------------------------------------------------------------
 create table car_brands(
@@ -234,4 +233,5 @@ drop table car_models;
 drop table car_brands;
 drop table clients;
 drop table user_roles;
-drop table users;*/
+drop table users;
+*/

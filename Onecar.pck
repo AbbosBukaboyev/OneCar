@@ -218,21 +218,21 @@ create or replace package Onecar is
   ----------------------------------------------------------------------------------------------------
   Procedure Car_Component_Update
   (
-    i_Car_Component_Id number,
-    i_Name             varchar2,
-    i_Component_Type   varchar2,
-    i_Status           varchar2,
-    i_Price            number
+    i_Component_Id   number,
+    i_Name           varchar2,
+    i_Component_Type varchar2,
+    i_Status         varchar2,
+    i_Price          number
   );
   ----------------------------------------------------------------------------------------------------
-  Procedure Car_Component_Delete(i_Car_Component_Id number);
+  Procedure Car_Component_Delete(i_Component_Id number);
   ----------------------------------------------------------------------------------------------------
   Procedure Request_Insert
   (
     i_Request_Time   timestamp,
     i_Request_Type   varchar2,
     i_Client_Id      number,
-    i_User_Id        number,
+    i_Car_Id         number,
     i_Issue_Details  varchar2 := null,
     i_Issue_File_Sha varchar2 := null,
     i_Status         varchar2
@@ -243,7 +243,7 @@ create or replace package Onecar is
     i_Request_Time   timestamp,
     i_Request_Type   varchar2,
     i_Client_Id      number,
-    i_User_Id        number,
+    i_Car_Id         number,
     i_Issue_Details  varchar2 := null,
     i_Issue_File_Sha varchar2 := null,
     i_Status         varchar2
@@ -255,7 +255,7 @@ create or replace package Onecar is
     i_Request_Time   timestamp,
     i_Request_Type   varchar2,
     i_Client_Id      number,
-    i_User_Id        number,
+    i_Car_Id         number,
     i_Issue_Details  varchar2 := null,
     i_Issue_File_Sha varchar2 := null,
     i_Status         varchar2
@@ -277,19 +277,19 @@ create or replace package Onecar is
   ----------------------------------------------------------------------------------------------------
   Procedure Service_Item_Save
   (
-    i_Request_Id       number,
-    i_Service_Id       number,
-    i_Car_Component_Id number,
-    i_Count            number,
-    i_Price            number,
-    i_Total_Amount     number
+    i_Request_Id   number,
+    i_Service_Id   number,
+    i_Component_Id number,
+    i_Count        number,
+    i_Price        number,
+    i_Total_Amount number
   );
   ----------------------------------------------------------------------------------------------------
   Procedure Service_Item_Delete
   (
-    i_Request_Id       number,
-    i_Service_Id       number,
-    i_Car_Component_Id number
+    i_Request_Id   number,
+    i_Service_Id   number,
+    i_Component_Id number
   );
 end Onecar;
 /
@@ -404,8 +404,6 @@ create or replace package body Onecar is
 
   ----------------------------------------------------------------------------------------------------
   Procedure User_Delete(i_User_Id number) is
-    r_User  Users%rowtype;
-    v_Dummy number;
   begin
     if User_Role_Exists(i_User_Id => i_User_Id, i_Role_Code => c_Role_Admin) then
       Raise_Application_Error(-20001, 'It is not allowed to delete admin user.');
@@ -434,7 +432,6 @@ create or replace package body Onecar is
     i_User_Id   number,
     i_Role_Code varchar2
   ) is
-    v_Dummy number;
   begin
     if User_Role_Exists(i_User_Id => i_User_Id, i_Role_Code => c_Role_Admin) then
       Raise_Application_Error(-20001, 'It is not allowed to delete role from admin user.');
@@ -700,7 +697,7 @@ create or replace package body Onecar is
       (name, Status, Order_No)
     values
       (i_Name, i_Status, i_Order_No)
-    returning _Service_Group_Id into v_Service_Group_Id;
+    returning Service_Group_Id into v_Service_Group_Id;
   
     return v_Service_Group_Id;
   end;
@@ -814,25 +811,25 @@ create or replace package body Onecar is
     i_Status         varchar2,
     i_Price          number
   ) return number is
-    v_Car_Component_Id number;
+    v_Component_Id number;
   begin
     insert into Car_Components
       (name, Component_Type, Status, Price)
     values
       (i_Name, i_Component_Type, i_Status, i_Price)
-    returning Car_Component_Id into v_Car_Component_Id;
+    returning Component_Id into v_Component_Id;
   
-    return v_Car_Component_Id;
+    return v_Component_Id;
   end;
 
   ----------------------------------------------------------------------------------------------------
   Procedure Car_Component_Update
   (
-    i_Car_Component_Id number,
-    i_Name             varchar2,
-    i_Component_Type   varchar2,
-    i_Status           varchar2,
-    i_Price            number
+    i_Component_Id   number,
+    i_Name           varchar2,
+    i_Component_Type varchar2,
+    i_Status         varchar2,
+    i_Price          number
   ) is
   begin
     update Car_Components t
@@ -840,14 +837,14 @@ create or replace package body Onecar is
            t.Component_Type = i_Component_Type,
            t.Status         = i_Status,
            t.Price          = i_Price
-     where t.Car_Component_Id = i_Car_Component_Id;
+     where t.Component_Id = i_Component_Id;
   end;
 
   ----------------------------------------------------------------------------------------------------
-  Procedure Car_Component_Delete(i_Car_Component_Id number) is
+  Procedure Car_Component_Delete(i_Component_Id number) is
   begin
     delete Car_Components t
-     where t.Car_Component_Id = i_Car_Component_Id;
+     where t.Component_Id = i_Component_Id;
   end;
 
   ----------------------------------------------------------------------------------------------------
@@ -856,19 +853,19 @@ create or replace package body Onecar is
     i_Request_Time   timestamp,
     i_Request_Type   varchar2,
     i_Client_Id      number,
-    i_User_Id        number,
+    i_Car_Id         number,
     i_Issue_Details  varchar2 := null,
     i_Issue_File_Sha varchar2 := null,
     i_Status         varchar2
   ) is
   begin
     insert into Requests
-      (Request_Time, Request_Type, Client_Id, User_Id, Issue_Details, Issue_File_Sha, Status)
+      (Request_Time, Request_Type, Client_Id, Car_Id, Issue_Details, Issue_File_Sha, Status)
     values
-      (Request_Time,
+      (i_Request_Time,
        i_Request_Type,
        i_Client_Id,
-       i_User_Id,
+       i_Car_Id,
        i_Issue_Details,
        i_Issue_File_Sha,
        i_Status);
@@ -880,7 +877,7 @@ create or replace package body Onecar is
     i_Request_Time   timestamp,
     i_Request_Type   varchar2,
     i_Client_Id      number,
-    i_User_Id        number,
+    i_Car_Id         number,
     i_Issue_Details  varchar2 := null,
     i_Issue_File_Sha varchar2 := null,
     i_Status         varchar2
@@ -888,12 +885,12 @@ create or replace package body Onecar is
     v_Request_Id number;
   begin
     insert into Requests
-      (Request_Time, Request_Type, Client_Id, User_Id, Issue_Details, Issue_File_Sha, Status)
+      (Request_Time, Request_Type, Client_Id, Car_Id, Issue_Details, Issue_File_Sha, Status)
     values
       (i_Request_Time,
        i_Request_Type,
        i_Client_Id,
-       i_User_Id,
+       i_Car_Id,
        i_Issue_Details,
        i_Issue_File_Sha,
        i_Status)
@@ -909,7 +906,7 @@ create or replace package body Onecar is
     i_Request_Time   timestamp,
     i_Request_Type   varchar2,
     i_Client_Id      number,
-    i_User_Id        number,
+    i_Car_Id         number,
     i_Issue_Details  varchar2 := null,
     i_Issue_File_Sha varchar2 := null,
     i_Status         varchar2
@@ -919,7 +916,7 @@ create or replace package body Onecar is
        set t.Request_Time   = i_Request_Time,
            t.Request_Type   = i_Request_Type,
            t.Client_Id      = i_Client_Id,
-           t.User_Id        = i_User_Id,
+           t.Car_Id         = i_Car_Id,
            t.Issue_Details  = i_Issue_Details,
            t.Issue_File_Sha = i_Issue_File_Sha,
            t.Status         = i_Status
@@ -964,12 +961,12 @@ create or replace package body Onecar is
   ----------------------------------------------------------------------------------------------------
   Procedure Service_Item_Save
   (
-    i_Request_Id       number,
-    i_Service_Id       number,
-    i_Car_Component_Id number,
-    i_Count            number,
-    i_Price            number,
-    i_Total_Amount     number
+    i_Request_Id   number,
+    i_Service_Id   number,
+    i_Component_Id number,
+    i_Count        number,
+    i_Price        number,
+    i_Total_Amount number
   ) is
   begin
     update Request_Service_Items t
@@ -978,28 +975,28 @@ create or replace package body Onecar is
            t.Total_Amount = i_Total_Amount
      where t.Request_Id = i_Request_Id
        and t.Service_Id = i_Service_Id
-       and t.Car_Component_Id = i_Car_Component_Id;
+       and t.Component_Id = i_Component_Id;
   
     if sql%notfound then
       insert into Request_Service_Items
-        (Request_Id, Service_Id, Car_Component_Id, count, Price, Total_Amout)
+        (Request_Id, Service_Id, Component_Id, count, Price, Total_Amount)
       values
-        (i_Request_Id, i_Service_Id, i_Car_Component_Id, i_Count, i_Price, i_Total_Amout);
+        (i_Request_Id, i_Service_Id, i_Component_Id, i_Count, i_Price, i_Total_Amount);
     end if;
   end;
 
   ----------------------------------------------------------------------------------------------------
   Procedure Service_Item_Delete
   (
-    i_Request_Id       number,
-    i_Service_Id       number,
-    i_Car_Component_Id number
+    i_Request_Id   number,
+    i_Service_Id   number,
+    i_Component_Id number
   ) is
   begin
     delete Request_Service_Items t
      where t.Request_Id = i_Request_Id
        and t.Service_Id = i_Service_Id
-       and t.Car_Component_Id = i_Car_Component_Id;
+       and t.Component_Id = i_Component_Id;
   end;
 
 end Onecar;
